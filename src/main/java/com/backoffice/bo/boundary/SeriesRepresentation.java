@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.backoffice.bo.entity.Series;
 import com.backoffice.bo.exception.NotFound;
+import java.util.Date;
 import java.util.UUID;
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -30,7 +31,7 @@ public class SeriesRepresentation {
     }
 
     @GetMapping()
-    public ResponseEntity<?> getCategories(){
+    public ResponseEntity<?> getSeries(){
             Iterable<Series> categories = sr.findAll();
             return new ResponseEntity<>(categories,HttpStatus.OK);		
     }
@@ -40,7 +41,7 @@ public class SeriesRepresentation {
             return Optional.ofNullable(sr.findById(id))
                             .filter(Optional::isPresent)
                             .map(series -> new ResponseEntity<>(series.get(),HttpStatus.OK))
-                            .orElseThrow( () -> new NotFound("Categorie inexistant"));		
+                            .orElseThrow( () -> new NotFound("Series inexistant"));		
     }
 	
     @PostMapping
@@ -51,11 +52,11 @@ public class SeriesRepresentation {
     }
     
     @PutMapping(value = "/{seriesId}")
-    public ResponseEntity<?> updateCategorie(@PathVariable("seriesId") String seriesId,
+    public ResponseEntity<?> updateSeries(@PathVariable("seriesId") String seriesId,
             @RequestBody Series seriesUpdated) {
         
         if (!sr.existsById(seriesId)) {
-            throw new NotFound("Sandwich inexistant");
+            throw new NotFound("Series inexistant");
         }
         return sr.findById(seriesId)
                 .map(categorie -> {
